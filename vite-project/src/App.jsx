@@ -8,7 +8,7 @@ const [number, setNumber] = useState(0);
 
   const onIncrease = () =>{
     setNumber(number + 1);
-    console.log('increase가 클릭됨')
+    console.log('increase가 클릭됨')/*동작 안됨*/
   }
   const onDecrease = () =>{
     setNumber(number - 1);
