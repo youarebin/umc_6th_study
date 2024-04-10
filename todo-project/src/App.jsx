@@ -5,7 +5,8 @@ function App() {
   const[todoInput, setTodoInput] = useState('');/*입력값 문자열*/
   const [todoList, setTodoList] = useState([]);/*todo데이터 저장 관리 배열*/
   const[doneList, setDoneList] = useState([]);/*완료todo저장 관리 배열*/
-/*input.value변경감지 -> setTodoInput으로 현재 todoInput을 inuput.value로 변경 */
+  
+  /*input.value변경감지 -> setTodoInput으로 현재 todoInput을 inuput.value로 변경 */
   const onChange = (event)=> setTodoInput(event.target.value)
 
   const handleKeyDown = (event)=>{
