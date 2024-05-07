@@ -5,27 +5,24 @@ import { useLocation } from 'react-router-dom';
 const Wrapper = styled.div`
     background-color: #171a32;
     color: white;
+    text-align: right;
+    height: 30px;
+    padding: 25px 20px;
+    /*하단에 고정하기*/
     position: fixed;
     bottom: 0;
-    width: 100%;
-    display: flex;
-    & >div > div: last-child{
-        display: flex;
-        flex-direction: row;/*수평 배치*/
-        justify-content: flex-end;
-    }
+    /* width: 100% */
+    left: 0;
+    right: 0;
 `;
 
-const Footer = () =>{
-    return(
+const Footer = () => {
+    const location = useLocation();
+
+    return (
         <Wrapper>
             <div>
-                <div>
-                    <p>http://localhost:5173{useLocation().pathname}</p>
-                </div>
-                <div>
-                    <p>http</p>
-                </div>
+                <p>http://localhost:5173{location.pathname}</p>
             </div>
         </Wrapper>
     );
