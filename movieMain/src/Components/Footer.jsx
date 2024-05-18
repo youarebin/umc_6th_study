@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useLocation } from 'react-router-dom';
 
 const Wrapper = styled.div`
+    /*width: 100% */
     background-color: #171a32;
     color: white;
     text-align: right;
@@ -11,7 +12,6 @@ const Wrapper = styled.div`
     /*하단에 고정하기*/
     position: fixed;
     bottom: 0;
-    /* width: 100% */
     left: 0;
     right: 0;
 `;

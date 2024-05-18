@@ -24,7 +24,7 @@ const Wrapper = styled.div`
     padding: 5px 5px;
   }
   a: hover{
-    transform: scale(1,2);
+    transform: scale(1.2);
     font-weight: bold;
   }
 `;

@@ -2,16 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-width: 100%;
-background-color: #1f2141;
-display: flex;
-div.content{
-    /*background-color: red;*/
-    justify-content: center;
-    flex-direction: column;/* 아래로 정렬하기 위해 컬럼으로 변경 */
-    align-items: center;/* 수직 중앙 정렬 */
-}
-p{
+justify-content: center;
+flex-direction: column;/* 아래로 정렬하기 위해 컬럼으로 변경 */
+align-items: center;/* 수직 중앙 정렬 */
+padding: 40px;
+h3{
     text-align: center;/*왜 color앞에 써야 적용되지? -> color뒤이쓰면 안됨, 색도 없어짐*/
     color: white
 }
@@ -21,13 +16,15 @@ div {
     align-items: center; /* 수직 중앙 정렬 */
 }
 div > input{
-    border-radius: 10px;
-    height: 30px;
-    width: 70%;
+    border-radius: 30px;
+    height: 40px;
+    width: 30%;
 }
-div.btn_area > button{
-    height: 30px;
-    width: 70%;
+div > button{
+    border-radius: 30px;
+    height: 40px;
+    width: 30%;
+    color: black;
     font-size: 15px;
     font-weight: 400;
     background-color: ${({isSubmitButtonDisabled}) => (isSubmitButtonDisabled ? "yellow" : "white")}
@@ -39,6 +36,7 @@ span.error_next_box{
 }
 div.elseThing{
     color: white;
+    display: inline-block;
 }
 `;
 
@@ -179,45 +177,31 @@ const SignUpPage = () =>{
 
     const handleSubmit = () =>{
         if(!isSubmitButtonDisabled){//유효성 검사 통과시
-            alert("폼 제출됨")
+            console.log("checkpw:",passwordCheck,"pw:",password,"age:",age,"email:",eamil,"username:",name)
         }
     }
 
     return(
         <Wrapper>
             <div className="content">
-            <div>
-                <p>회원가입 페이지</p>
-                <div>
+                <h3>회원가입 페이지</h3>
                     <input type="text" value={name} onChange={onChangeName} placeholder="이름을 입력해주세요."/>
-                    <span class="error_next_box">{nameMessage}</span>
-                </div>
-                <div>
+                    <span className="error_next_box">{nameMessage}</span>
                     <input type="email" value={eamil} onChange={onChangeEmail} placeholder="이메일을 입력해주세요."/>
-                    <span class="error_next_box">{eamilMessage}</span>
-                </div>
-                <div>
+                    <span className="error_next_box">{eamilMessage}</span>
                     <input type="text" value={age} onChange={onChangeAge} placeholder="나이를 입력해주세요."/>
-                    <span class="error_next_box">{ageMessage}</span>
-                </div>
-                <div>
+                    <span className="error_next_box">{ageMessage}</span>
                     <input type="password" value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요."/>
-                    <span class="error_next_box">{passwordMessage}</span>
-                </div>
-                <div>
+                    <span className="error_next_box">{passwordMessage}</span>
                     <input type="password" value={passwordCheck} onChange={onChangePasswordcheck} placeholder="비밀번호 확인"/>
-                    <span class="error_next_box">{passwordCheckMessage}</span>
-                </div>
-                <div class="btn_area">
+                    <span className="error_next_box">{passwordCheckMessage}</span>
                     <button type="button" onClick={handleSubmit} disabled={isSubmitButtonDisabled}>
                         <span>제출하기</span>
                     </button>
-                </div>
                 <div className="elseThing">
                    <div>이미 아이디가 있으신가요?</div>
                    <div>로그인 페이지로 이동하기</div>
                 </div>
-            </div>
             </div>
         </Wrapper>
     );
