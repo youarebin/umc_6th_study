@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styled from 'styled-components'
 import Navbar from './components/Navbar';
 import SignUpPage from './pages/SignUpPage'
+import Login from './pages/Login';
 import MainPage from './pages/MainPage';
 import PopularPage from './pages/PopularPage';
 import NowPlayingPage from './pages/NowPlayingPage';
@@ -13,23 +14,29 @@ import MovieDetailPage from './pages/MovieDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Footer from './components/Footer'
 
-const Body = styled.div`
-height: 100vh;
+const Container = styled.div`
 width: 100vw;
+height: 100vh;
 background-color: #1f2141; 
+`;
+
+const Body = styled.div`
+flex-grow: 1; /* Body가 남은 공간을 모두 차지하도록 함 */
 padding-top:  55px;/*Navbar height이상의 padding값 주기*/
-padding-bottom: 55px;/**/
+padding-bottom: 70px;
 `;
 
 const App = () =>{
   return(
 
       <BrowserRouter>
+      <Container>
         <Navbar />
         <Body>
           <Routes>
             <Route exact path="/MainPage" element={<MainPage />}  />
             <Route exact path="/SignUpPage" element={<SignUpPage />}  />
+            <Route exact path="/Login" element={<Login />}/>
             <Route exact path="/PopularPage" element={<PopularPage />} />
             <Route exact path="/NowPlayingPage" element={<NowPlayingPage />}/>
             <Route exact path="/TopRatedPage" element={<TopRatedPage />}/>
@@ -40,6 +47,7 @@ const App = () =>{
           </Routes>     
         </Body>  
         <Footer />
+        </Container>
       </BrowserRouter>
 
   );

@@ -7,13 +7,27 @@ import axios from "axios";
 const Wrapper = styled.div`
 background-color: #1f2141; 
 color: white;
-//display: flex;
 padding: 200px;
-// div.description{
-//   padding: 60px;
-// }
 div.creditsInfo{
   padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  place-items: center stretch;
+}
+`;
+
+const MovieDescription = styled.div`
+display: flex;
+div.description{
+  padding: 60px;
+}
+`;
+
+const Credits = styled.div`
+img{
+  width: 80px;
+  height: 80px;
+  border-radius: 70%;
 }
 `;
 
@@ -65,26 +79,30 @@ const MovieDetailPage = () => {
  
   return (
     <Wrapper>
+      <MovieDescription>
         <div>
             <img src={getImageUrl(movies.poster_path)} alt={movies.original_title} />
-        {/* </div>
-        <div className="description"> */}
+        </div>
+        <div className="description">
             <h1>{movies.original_title}</h1>
-            <p>평점 {star}</p>
-            <p>개봉일 {movies.release_date}</p>
-            <p>줄거리</p>
+            <h3>평점 {star}</h3>
+            <h3>개봉일 {movies.release_date}</h3>
+            <h3>줄거리</h3>
             <p>{summary}</p>
         </div>  
-        <div className="creditsInfo">
-          <p>출연진 및 제작진</p>
-          {credits && credits.cast.map((credit) => (
-             <div key={credit.id}>
-              <img src= {"http://image.tmdb.org/t/p/w500/" + credit.profile_path} />
-              <p>{credit.original_name}</p>
-              <p>{credit.known_for_department}</p>
-             </div>
-          ))}
-        </div>  
+      </MovieDescription>  
+      <h3 style={{ textAlign: 'center' }}>출연진 및 제작진</h3>
+      <div className="creditsInfo">
+         {credits && credits.cast.map((credit) => (
+            <Credits key={credit.id}>
+             <img src= {credit.profile_path ? 
+                      `http://image.tmdb.org/t/p/w500/${credit.profile_path}`: 
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz7ztleRwzXhFdiwBYqZ8cib9RvEsukVVUS3niN1YQ&s"} />
+             <p>{credit.original_name}</p>
+             <p>{credit.known_for_department}</p>
+            </Credits>
+         ))}
+      </div>  
     </Wrapper>
   );
 };

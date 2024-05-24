@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
 justify-content: center;
@@ -36,15 +37,16 @@ span.error_next_box{
 }
 div.elseThing{
     color: white;
-    display: inline-block;
+    display: flex;
 }
 `;
 
 
 const SignUpPage = () =>{
-
+    const navigate = useNavigate();
      //초기값 세팅
      const[name, setName] = useState("");
+     const[id, setId] = useState("");
      const[eamil, setEmail] = useState("");
      const[age, setAge] = useState("");
      const[password, setPassword] = useState("");
@@ -59,6 +61,7 @@ const SignUpPage = () =>{
  
      //유효성 검사
      const[isName, setIsName] = useState(false);
+     const[isId, setIsId] = useState(false);
      const[isEamil, setIsEmail] = useState(false);
      const[isAge, setIsAge] = useState(false);
      const[isPassword, setIsPassword] = useState(false);
@@ -76,6 +79,12 @@ const SignUpPage = () =>{
             setIsName(true)
         }
             
+     }
+
+     const onChangeId = (e) =>{
+        const currentId = e.target.value;
+        setId(currentId)
+        setIsId(true)
      }
 
      const onChangeEmail = (e) =>{
@@ -178,6 +187,7 @@ const SignUpPage = () =>{
     const handleSubmit = () =>{
         if(!isSubmitButtonDisabled){//유효성 검사 통과시
             console.log("checkpw:",passwordCheck,"pw:",password,"age:",age,"email:",eamil,"username:",name)
+            navigate(`/Login`)
         }
     }
 
@@ -187,6 +197,8 @@ const SignUpPage = () =>{
                 <h3>회원가입 페이지</h3>
                     <input type="text" value={name} onChange={onChangeName} placeholder="이름을 입력해주세요."/>
                     <span className="error_next_box">{nameMessage}</span>
+                    <input type="text" value={id} onChange={onChangeId} placeholder="아이디를 입력해주세요."/>
+                    <span className="error_next_box">{}</span>
                     <input type="email" value={eamil} onChange={onChangeEmail} placeholder="이메일을 입력해주세요."/>
                     <span className="error_next_box">{eamilMessage}</span>
                     <input type="text" value={age} onChange={onChangeAge} placeholder="나이를 입력해주세요."/>
@@ -200,7 +212,7 @@ const SignUpPage = () =>{
                     </button>
                 <div className="elseThing">
                    <div>이미 아이디가 있으신가요?</div>
-                   <div>로그인 페이지로 이동하기</div>
+                   <div onClick={()=>navigate(`/Login`)}>로그인 페이지로 이동하기</div>
                 </div>
             </div>
         </Wrapper>

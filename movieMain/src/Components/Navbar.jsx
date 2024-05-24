@@ -56,6 +56,7 @@ const Navbar = () =>{
                     <Link to="/" onClick={handleLogin}>로그인</Link>
                 )}*/}
                 <Link to="/SignUpPage">회원가입</Link>
+                <Link to="/Login">로그인</Link>
                 <Link to="/PopularPage">Popular</Link>
                 <Link to="/NowPlayingPage">NowPlaying</Link>
                 <Link to="/TopRatedPage">TopRatedpage</Link>
