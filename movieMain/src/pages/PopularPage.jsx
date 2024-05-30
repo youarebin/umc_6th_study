@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery } from "@tanstack/react-query";
 import axios from 'axios';
 import { getImageUrl } from '../TMDB_api';
 import { useNavigate } from 'react-router-dom';
@@ -45,13 +46,33 @@ const Explain = styled.div`
   }
   `;
 
+  const fetchData = async (currentPage) => {
+    const options = {
+      method: 'GET',
+      url: 'https://api.themoviedb.org/3/movie/popular',
+      params: { language: 'ko-KR', page: currentPage },
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NGYyNzg0NTBhNzE2NTk4YmZhYzMxM2QyZWZlYjBiZSIsInN1YiI6IjY2MzBlNTMxOTY2MWZjMDEyZDY1NmYwNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OiUp_MvuhUaJQ0UPTFrFCzk_IFnlUIo03QryWkRooMI'
+      }
+    };
+
+    const response = await axios.request(options);
+    return response.data.results;
+  };
+
 const PopularPage = () => {
   const navigate = useNavigate();
-
-  const [Movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const [currentPage, setCurrentPage] = useState(1);
+
+  const{
+    isLoading,
+    data,
+  } = useQuery({
+    queryKey: ['movies', currentPage],
+    queryFn: () => fetchData(currentPage),
+    keepPreviousData: true
+  });
 
   const handleNextPage = () => {
     setCurrentPage(prevPage => prevPage + 1);
@@ -63,38 +84,13 @@ const PopularPage = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const options = {
-        method: 'GET',
-        url: 'https://api.themoviedb.org/3/movie/popular',
-        params: { language: 'en-US', page: currentPage },
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NGYyNzg0NTBhNzE2NTk4YmZhYzMxM2QyZWZlYjBiZSIsInN1YiI6IjY2MzBlNTMxOTY2MWZjMDEyZDY1NmYwNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OiUp_MvuhUaJQ0UPTFrFCzk_IFnlUIo03QryWkRooMI'
-        }
-      };
-  
-      try {
-        const response = await axios.request(options);
-        setMovies(response.data.results);
-        setIsLoading(false); // 데이터 수신 후 isLoading 상태 업데이트
-      } catch (error) {
-        console.error('Error fetching popular movies: ', error);
-        setIsLoading(false); // 에러 발생 시도 isLoading 상태 업데이트
-      }
-    };
-
-    fetchData();
-  }, [currentPage]);
-
   return (
     <>
       {/*{isLoading ? ( <LoadingSpinner/> ) : ( <Layout Movies={Movies}/> )}*/}
       {isLoading ? (<LoadingSpinner/>) : (
         <Wrapper>
           <ContentWrapper className='container'>
-          {Movies.map(movie =>(
+          {data?.map(movie =>(
             <MovieContent 
               key={movie.id} 
               className='movieContainer'

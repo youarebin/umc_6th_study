@@ -2,6 +2,7 @@ import {Oval} from 'react-loader-spinner'
 import styled from 'styled-components';
 
 const CenteredContainer = styled.div`
+    background-color: #1f2141; 
     display: flex;
     justify-content: center;
     align-items: center;

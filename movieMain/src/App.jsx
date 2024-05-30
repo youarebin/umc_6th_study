@@ -13,6 +13,7 @@ import UpComing from './pages/UpComing';
 import MovieDetailPage from './pages/MovieDetailPage'; 
 import NotFoundPage from './pages/NotFoundPage';
 import Footer from './components/Footer'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const Container = styled.div`
 width: 100vw;
@@ -26,6 +27,10 @@ padding-top:  55px;/*Navbar height이상의 padding값 주기*/
 padding-bottom: 70px;
 `;
 
+
+// React Query Client 설정
+const queryClient = new QueryClient();
+
 const App = () =>{
   return(
 
@@ -33,6 +38,7 @@ const App = () =>{
       <Container>
         <Navbar />
         <Body>
+           <QueryClientProvider client={queryClient}>
           <Routes>
             <Route exact path="/MainPage" element={<MainPage />}  />
             <Route exact path="/SignUpPage" element={<SignUpPage />}  />
@@ -44,7 +50,8 @@ const App = () =>{
             <Route exact path="/MovieDetailPage" element={<MovieDetailPage />}/>
             <Route path="/MovieDetailPage/:id" element={<MovieDetailPage />} />
             <Route path='/*' element={<NotFoundPage />}/>
-          </Routes>     
+          </Routes>    
+           </QueryClientProvider>
         </Body>  
         <Footer />
         </Container>

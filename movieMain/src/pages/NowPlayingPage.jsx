@@ -1,68 +1,131 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { moviesApi } from "../TMDB_api";
-import Layout from '../components/Layout';
+import { getImageUrl } from "../TMDB_api";
 import LoadingSpinner from '../components/isLoading';
-import InfiniteScroll from 'react-infinite-scroller';
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInView } from 'react-intersection-observer'
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  background-color: #1f2141; 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+  padding: 40px;
+`;
+
+const MovieContent = styled.div`
+  background-color: #383a69;
+  color: white;
+  border-radius: 10px 10px;
+  img {
+    width: 100%; 
+    border-radius: 10px 10px 0 0;
+  }
+`;
+
+const Explain = styled.div`
+    display: flex;
+    font-size: 15px;
+    justify-content: space-between;
+    padding: 20px;
+  `;
+
+const fetchData = async ({ pageParam = 1 }) => {//초기값 페이지 1로 설정
+  const options = {
+    method: 'GET',
+    url: 'https://api.themoviedb.org/3/movie/now_playing',
+    params: { language: 'ko-KR', page: pageParam },
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NGYyNzg0NTBhNzE2NTk4YmZhYzMxM2QyZWZlYjBiZSIsInN1YiI6IjY2MzBlNTMxOTY2MWZjMDEyZDY1NmYwNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OiUp_MvuhUaJQ0UPTFrFCzk_IFnlUIo03QryWkRooMI'
+    }
+  };
+  const response = await axios.request(options);
+  return {
+    page: pageParam,
+    nextPage: pageParam +1,//다음 페이지 값 반환
+    results: response.data.results,
+  };
+};
 
 const NowPlayingPage = () => {
-  const [Movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate(); 
+  //ref는 감지할 DOM 요소에 할당됩니다.
+  //inView는 해당 요소가 화면에 보이는지 여부를 나타내는 Boolean 값입니다.
+  const { ref, inView } = useInView();
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ['movies'],
+    queryFn: fetchData,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  })
 
   useEffect(() => {
-    const fetchData = async () => {
-      const options = {
-        method: 'GET',
-        url: 'https://api.themoviedb.org/3/movie/now_playing',
-        params: { language: 'en-US', page: currentPage },
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NGYyNzg0NTBhNzE2NTk4YmZhYzMxM2QyZWZlYjBiZSIsInN1YiI6IjY2MzBlNTMxOTY2MWZjMDEyZDY1NmYwNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OiUp_MvuhUaJQ0UPTFrFCzk_IFnlUIo03QryWkRooMI'
-        }
-      };
-  
-      try {
-        const response = await axios.request(options);
-        setMovies(prevMovies => [...prevMovies, ...response.data.results]);
-        setIsLoading(false); // 데이터 수신 후 isLoading 상태 업데이트
-      } catch (error) {
-        console.error('Error fetching popular movies: ', error);
-        setIsLoading(false); // 에러 발생 시도 isLoading 상태 업데이트
-      }
-    };
-
-    fetchData();
-  }, [currentPage]);
-
-  const handleScorll = () =>{
-    if(window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight || isLoading){
-      setCurrentPage(prevapge => prevapge + 1);
+    // console.log('inView:',inView)
+    // console.log('hasNextPage:',hasNextPage)
+    if(inView & hasNextPage){
+      fetchNextPage();
     }
-    
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScorll);
-    return () => window.removeEventListener('scroll', handleScorll);
-  },[isLoading]);
+  }, [fetchNextPage, inView, hasNextPage]);
   
-    return (
-      <>
-      {isLoading && currentPage === 1 ? (
-        <LoadingSpinner />
-      ) : (
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={() => setCurrentPage(prevPage => prevPage + 1)}
-          hasMore={!isLoading}
-          loader={<LoadingSpinner key={0} />}
-        >
-          <Layout Movies={Movies} />
-        </InfiniteScroll>
-      )}
-      </>
-    );
+    return status === "pending" ? (
+      <LoadingSpinner/>
+    ): status === "error" ? (
+      <div>{error.message}</div>
+    ): (
+        <div>
+        {data.pages.map((page, pageIndex) => {
+          return (
+            <Wrapper key={pageIndex} className='container'>
+              {page.results && page.results.map((movie) => {//영화 데이터 불러오기
+                return(
+                <MovieContent 
+                key={movie.id} 
+                className='movieContainer'
+                onClick={()=>/*click시 state정보 넘겨줌*/
+                  navigate(`/MovieDetailPage/${movie.id}`,{
+                    state:{
+                      original_title: movie.original_title,
+                      backdrop_path: movie.backdrop_path,
+                      poster_path: movie.poster_path,
+                      vote_average: movie.vote_average,
+                      release_date: movie.release_date,
+                      overview: movie.overview,
+                    },
+                  })
+                }>    
+                  <img 
+                    src={getImageUrl(movie.poster_path)} 
+                    alt={movie.title}
+                  />
+        
+                  <Explain>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                    <span>{movie.title}</span>
+                    <span>{movie.vote_average}</span>
+                  </Explain>
+                </MovieContent>
+                );
+              })}
+            </Wrapper>
+          );
+        })}
+          <div ref={ref}>
+            {/*로딩 스피너 나타내기 */}
+            {isFetchingNextPage && <LoadingSpinner />}
+          </div>
+        </div>
+    )
+
   };
 
 export default NowPlayingPage;
