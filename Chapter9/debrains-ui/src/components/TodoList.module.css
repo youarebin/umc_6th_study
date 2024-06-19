@@ -1,0 +1,59 @@
+.InputTodo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    text-align: center;
+}
+.textbar{
+    margin-right: 20px;
+    border-radius: 30px;
+    width: 250px;
+    height: 25px;
+    border-style: solid;
+    border-color:#cdcdcf;
+}
+.submitbutton{
+    width: 25px;
+    height: 25px;
+    border-radius: 70%;
+    border-style: solid;
+    border-color: #cdcdcf;
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+.list{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.checkBox{
+    border-radius: 10px;
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+}
+.todolist{
+    text-align: left;
+    font-size: 18px;
+    color: #333;
+    padding: 0 10px;
+    width: 300px;
+}
+.deleteBtn{
+    margin-right: 0;
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 18px;
+}

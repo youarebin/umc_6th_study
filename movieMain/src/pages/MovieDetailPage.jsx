@@ -7,20 +7,33 @@ import axios from "axios";
 const Wrapper = styled.div`
 background-color: #1f2141; 
 color: white;
-padding: 200px;
+
 div.creditsInfo{
   padding: 30px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns:  repeat(10, 1fr);
   place-items: center stretch;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 `;
 
 const MovieDescription = styled.div`
-display: flex;
-div.description{
-  padding: 60px;
-}
+  padding: 200px;
+  display: flex;
+
+  div.description{
+    width: 500px;
+    padding: 30px;
+    flex-direction: column;
+    padding: 100px 0 0 100px;
+  }
+
+  @media (min-width: 300px) and (max-width: 900px) {
+    display: block;
+  }
 `;
 
 const Credits = styled.div`
@@ -79,6 +92,8 @@ const MovieDetailPage = () => {
  
   return (
     <Wrapper>
+      <div className="backgroundImage">
+
       <MovieDescription>
         <div>
             <img src={getImageUrl(movies.poster_path)} alt={movies.original_title} />
@@ -91,6 +106,7 @@ const MovieDetailPage = () => {
             <p>{summary}</p>
         </div>  
       </MovieDescription>  
+
       <h3 style={{ textAlign: 'center' }}>출연진 및 제작진</h3>
       <div className="creditsInfo">
          {credits && credits.cast.map((credit) => (
@@ -103,6 +119,8 @@ const MovieDetailPage = () => {
             </Credits>
          ))}
       </div>  
+
+      </div>
     </Wrapper>
   );
 };

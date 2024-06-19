@@ -13,6 +13,18 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 20px;
   padding: 40px;
+
+   @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const MovieContent = styled.div`
