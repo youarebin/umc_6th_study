@@ -4,7 +4,7 @@ import { getImageUrl } from "../TMDB_api";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  background-color: #1f2141; 
+  background-color: #171a32; 
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 20px;

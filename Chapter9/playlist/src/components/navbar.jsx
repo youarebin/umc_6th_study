@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 const NavWrapper = styled.div`
 background-color : #5852fe;
 display: flex;
+justify-content: center;
+align-items: center;
 height: 100px;
 position: fixed;
 top: 0;
@@ -13,11 +15,38 @@ left: 0;
 right: 0;
 color: white;
 h1{
-margin-right: 300px;
+    margin-right: auto;
+    margin-left: 140px;
+}
+`
+
+const IconWrapper = styled.div`
+position: relative;
+margin-right: 170px;
+margin-left: auto;
+.CarIcon{
+position: relative;
+}
+
+p{
+position: absolute;
+top: 0px;
+right: -5px;
+width: 25px;
+height: 25px;
+border-radius: 50%;
+background-color: #9792f7;
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 0;
 }
 `
 
 const FooWrapper = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
 background-color : #5852fe;
 height: 100px;
 position: fixed;
@@ -25,6 +54,9 @@ bottom: 0;
 left: 0;
 right: 0;
 color: white;
+h1{
+text-align: center;
+}
 `
 
 const Navbar = () =>{
@@ -32,9 +64,11 @@ const Navbar = () =>{
 
     return(
         <NavWrapper>
-            <h1>UMC PlayList</h1>
-            <CartIcon/>
+            <h1>REAL DATA UMC PlayList</h1>
+            <IconWrapper>
+                <CartIcon/>
             <p>{totalAmount}</p>
+            </IconWrapper>
         </NavWrapper>
     )
 }

@@ -18,8 +18,9 @@ span.error_next_box{
 }
 input{
     border-radius: 30px;
-    height: 40px;
+    height: 30px;
     width: 30%;
+    padding: 7px 15px;
 }
 button{
     border-radius: 30px;
@@ -87,7 +88,7 @@ const Login = () =>{
             <span className="error_next_box">{idMessage}</span>
             <input type="password" value={password} onChange={onChangePassword} placeholder="비밀번호"/>
             <span className="error_next_box">{passwordMessage}</span>
-           <button type="button"  style={{ backgroundColor: (isId && isPassword) ? 'yellow' : 'white' }}> 
+           <button type="button"  style={{ backgroundColor: (isId && isPassword) ? '#ffc411' : 'white' }}> 
                 <span>로그인</span>
             </button>
         </Wrapper>

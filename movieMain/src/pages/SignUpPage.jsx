@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
 justify-content: center;
-flex-direction: column;/* 아래로 정렬하기 위해 컬럼으로 변경 */
 align-items: center;/* 수직 중앙 정렬 */
 padding: 40px;
 h3{
     text-align: center;/*왜 color앞에 써야 적용되지? -> color뒤이쓰면 안됨, 색도 없어짐*/
     color: white
 }
-div {
+.content {
     display: flex;
     flex-direction: column; /* 아래로 정렬하기 위해 컬럼으로 변경 */
     align-items: center; /* 수직 중앙 정렬 */
 }
 div > input{
     border-radius: 30px;
-    height: 40px;
+    height: 30px;
     width: 30%;
+    padding: 7px 15px;
 }
 div > button{
     border-radius: 30px;
@@ -28,7 +29,6 @@ div > button{
     color: black;
     font-size: 15px;
     font-weight: 400;
-    background-color: ${({isSubmitButtonDisabled}) => (isSubmitButtonDisabled ? "yellow" : "white")}
 }
 span.error_next_box{
     color: red;
@@ -36,8 +36,19 @@ span.error_next_box{
     font-size: 12px;
 }
 div.elseThing{
-    color: white;
+width: 40%;
     display: flex;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+    a{
+        margin-top: 16px;
+        margin-left: 5%;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
 }
 `;
 
@@ -187,6 +198,7 @@ const SignUpPage = () =>{
     const handleSubmit = () =>{
         if(!isSubmitButtonDisabled){//유효성 검사 통과시
             console.log("checkpw:",passwordCheck,"pw:",password,"age:",age,"email:",eamil,"username:",name)
+            alert("가입되었습니다!")
             navigate(`/Login`)
         }
     }
@@ -207,12 +219,13 @@ const SignUpPage = () =>{
                     <span className="error_next_box">{passwordMessage}</span>
                     <input type="password" value={passwordCheck} onChange={onChangePasswordcheck} placeholder="비밀번호 확인"/>
                     <span className="error_next_box">{passwordCheckMessage}</span>
-                    <button type="button" onClick={handleSubmit} disabled={isSubmitButtonDisabled}>
+                    <button type="button" onClick={handleSubmit} disabled={isSubmitButtonDisabled} 
+                    style={{ backgroundColor: (isSubmitButtonDisabled) ? 'white' : '#ffc411' }}>
                         <span>제출하기</span>
                     </button>
                 <div className="elseThing">
-                   <div>이미 아이디가 있으신가요?</div>
-                   <div onClick={()=>navigate(`/Login`)}>로그인 페이지로 이동하기</div>
+                   <p>이미 아이디가 있으신가요?</p>
+                   <Link to="/Login">로그인 페이지로 이동하기</Link>
                 </div>
             </div>
         </Wrapper>
