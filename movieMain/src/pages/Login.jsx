@@ -1,7 +1,9 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
 justify-content: center;
 flex-direction: column;/* 아래로 정렬하기 위해 컬럼으로 변경 */
 align-items: center;/* 수직 중앙 정렬 */
@@ -34,6 +36,8 @@ button{
 `;
 
 const Login = () =>{
+    const navigate = useNavigate();
+
     const[id, setId] = useState("");
     const[password, setPassword] = useState("");
     
@@ -81,15 +85,43 @@ const Login = () =>{
         }
      }
 
+     const handleSubmit = async(e) =>{
+        e.preventDefault();
+        try{
+            const response = await axios.post("http://localhost:8080/auth/login",{
+                username: id,
+                password: password
+            })
+            if(response.status === 200){
+                const token = response.data.token
+                localStorage.setItem("token", token)
+                localStorage.setItem("username", response.data.username)
+                alert("로그인 성공!")
+                navigate("/MainPage")
+            }
+        }catch(error){
+            if (error.response) {
+                if (error.response.status === 401) {
+                    alert('아이디나 비밀번호가 올바르지 않습니다.');
+                } else {
+                    alert('로그인 중 오류가 발생했습니다.');
+                }
+            } else {
+                console.error(error.message);
+                alert('로그인 중 오류가 발생했습니다.');
+            }
+        }
+     }
+
     return(
-        <Wrapper>
+        <Wrapper method="post" onSubmit={handleSubmit}>
             <h3>로그인 페이지</h3>
-            <input type="text" value={id} onChange={onChangeId} placeholder="아이디"/>
+            <input type="text" name="username" value={id} onChange={onChangeId} placeholder="아이디"/>
             <span className="error_next_box">{idMessage}</span>
-            <input type="password" value={password} onChange={onChangePassword} placeholder="비밀번호"/>
+            <input type="password" name="password" value={password} onChange={onChangePassword} placeholder="비밀번호"/>
             <span className="error_next_box">{passwordMessage}</span>
-           <button type="button"  style={{ backgroundColor: (isId && isPassword) ? '#ffc411' : 'white' }}> 
-                <span>로그인</span>
+            <button type="submit"  style={{ backgroundColor: (isId && isPassword) ? '#ffc411' : 'white' }}> 
+                로그인
             </button>
         </Wrapper>
     );

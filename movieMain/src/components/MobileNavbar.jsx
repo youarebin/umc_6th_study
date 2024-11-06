@@ -33,7 +33,7 @@ const Sidebar = styled.div`
   }
 
   a {
-    margin: 10px 0;
+    margin: 15px 0;
     color: white;
     text-decoration: none;
     font-size: 20px;

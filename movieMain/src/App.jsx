@@ -39,6 +39,7 @@ const App = () =>{
         <Body>
            <QueryClientProvider client={queryClient}>
           <Routes>
+            <Route exact path="/" element={<MainPage />}  />
             <Route exact path="/MainPage" element={<MainPage />}  />
             <Route exact path="/SignUpPage" element={<SignUpPage />}  />
             <Route exact path="/Login" element={<Login />}/>
